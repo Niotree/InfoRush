@@ -42,7 +42,7 @@ void Car::handleInputLeft(const sf::Event& event)
 
 void Car::handleInputRight(const sf::Event& event)
 {
-	if (event.type == sf::Event::KeyPressed && event.key.code == m_keyRight && m_lane < 2)
+	if (event.type == sf::Event::KeyPressed && event.key.code == m_keyRight && m_lane < 3)
 	{
 		setLane(static_cast<Lane>(m_lane + 2));
 	}

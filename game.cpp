@@ -4,11 +4,11 @@
 #include <iterator>
 
 Game::Game() :
-	m_window(sf::VideoMode(LANE_WIDTH * 4, WINDOW_HEIGHT), "TwoCars", sf::Style::Close | sf::Style::Titlebar),
+	m_window(sf::VideoMode(LANE_WIDTH * 3, WINDOW_HEIGHT), "TwoCars", sf::Style::Close | sf::Style::Titlebar),
 	m_dividers(sf::Lines, 6),
 	m_leftCar(COLOR, sf::Vector2f{ (int)LANE_WIDTH, (int)WINDOW_HEIGHT }),
 	//m_rightCar(RIGHT_COLOR, sf::Vector2f{ (int)LANE_WIDTH * 3, (int)WINDOW_HEIGHT }),
-	m_overlayBg({ (int)LANE_WIDTH * 4, (int)WINDOW_HEIGHT }),
+	m_overlayBg({ (int)LANE_WIDTH * 3, (int)WINDOW_HEIGHT }),
 	m_playing(false)
 {
 	m_window.setVerticalSyncEnabled(true);
@@ -28,7 +28,7 @@ Game::Game() :
 	m_font.loadFromFile("assets/font.ttf");
 	m_prompt.setFont(m_font);
 	m_prompt.setColor(sf::Color(180, 180, 180));
-	m_prompt.setCharacterSize(20);
+	m_prompt.setCharacterSize(15);
 	m_prompt.setString("Take all Circles, avoid all Triangles.\n"
 		"Control left car with F, right with J.\n"
 		"       Press Space to start.");
@@ -109,9 +109,18 @@ void Game::run()
 					&& it->getShape().getGlobalBounds().top < WINDOW_HEIGHT - OBJECT_SIZE)
 				{
 					auto& car = it->getShape().getGlobalBounds().left < 3 * LANE_WIDTH ? m_leftCar : m_leftCar;
-					Car::Lane lane = static_cast<int>(it->getShape().getGlobalBounds().left / LANE_WIDTH) % 2 ? Car::Right : Car::Left;
+					Car::Lane lane;
+					if (static_cast<int>(it->getShape().getGlobalBounds().left / LANE_WIDTH) % 3 == Car::Right) {
+						lane = Car::Right;
+					}
+					else if (static_cast<int>(it->getShape().getGlobalBounds().left / LANE_WIDTH) % 3 == Car::Left) {
+						lane = Car::Left;
+					}
+					else lane = Car::Center;
+					//Car::Lane lane = static_cast<int>(it->getShape().getGlobalBounds().left / LANE_WIDTH) % 3 ? Car::Right : Car::Left;
 					if (lane == car.getLane())
 					{
+						std::cout << "lala";
 					if (it->getType() == Obstacle::Triangle)
 					{
 						gameOver();
@@ -153,6 +162,7 @@ void Game::run()
 
 bool Game::isGameOver(Car::Lane carLane, Car::Lane objLane, Obstacle::Type type)
 {
+	std::cout << "lala";
 	if ((carLane == objLane && type == Obstacle::Circle)
 		|| (carLane != objLane && type == Obstacle::Triangle))
 		return false;

@@ -5,7 +5,7 @@
 class Car : public sf::Drawable
 {
 public:
-	enum Lane { Left = -2, Center=1, Right = 2 };
+	enum Lane { Left = -1, Center=1, Right = 3 };
 	Car(const sf::Color& color, const sf::Vector2f& pos);
 	void setKeyLeft(sf::Keyboard::Key key);
 	void setKeyRigth(sf::Keyboard::Key key);
