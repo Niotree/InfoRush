@@ -110,17 +110,15 @@ void Game::run()
 				{
 					auto& car = it->getShape().getGlobalBounds().left < 3 * LANE_WIDTH ? m_leftCar : m_leftCar;
 					Car::Lane lane;
-					if (static_cast<int>(it->getShape().getGlobalBounds().left / LANE_WIDTH) % 3 == Car::Right) {
+					if (static_cast<int>(it->getShape().getGlobalBounds().left / LANE_WIDTH) % 3 == 2) {
 						lane = Car::Right;
 					}
-					else if (static_cast<int>(it->getShape().getGlobalBounds().left / LANE_WIDTH) % 3 == Car::Left) {
+					else if (static_cast<int>(it->getShape().getGlobalBounds().left / LANE_WIDTH) % 3 == 0) {
 						lane = Car::Left;
 					}
 					else lane = Car::Center;
-					//Car::Lane lane = static_cast<int>(it->getShape().getGlobalBounds().left / LANE_WIDTH) % 3 ? Car::Right : Car::Left;
 					if (lane == car.getLane())
 					{
-						std::cout << "lala";
 					if (it->getType() == Obstacle::Triangle)
 					{
 						gameOver();
