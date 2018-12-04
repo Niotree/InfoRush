@@ -3,11 +3,18 @@
 #define TRIANGLE_H
 #include "Obstacle.h"
 
-class triangle : public Obstacle
+class Triangle : public Obstacle
 {
 public:
-	triangle();
-	~triangle();
+	/*enum Type
+	{
+		Cercle
+	};*/
+	Triangle(const sf::Color& color, const sf::Vector2f& pos);
+	static sf::Texture m_triangleTexture;
+	//Type getType();
+protected:
+	//Type m_type;
 };
 
 #endif //TRIANGLE_H

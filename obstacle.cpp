@@ -1,10 +1,10 @@
 #include "Obstacle.h"
 #include "Constants.h"
 
-sf::Texture Obstacle::m_circleTexture;
-sf::Texture Obstacle::m_triangleTexture;
+//sf::Texture Obstacle::m_circleTexture;
+//sf::Texture Obstacle::m_triangleTexture;
 
-Obstacle::Obstacle(Type type, const sf::Color& color, const sf::Vector2f& pos) :
+/*Obstacle::Obstacle() :
 	m_type(type)
 {
 	if (type == Circle)
@@ -21,19 +21,14 @@ Obstacle::Obstacle(Type type, const sf::Color& color, const sf::Vector2f& pos) :
 	m_shape->setPosition(pos);
 	m_shape->setFillColor(color);
 	m_shape->setOrigin(m_shape->getLocalBounds().width / 2, 0);
+}*/
+
+void Obstacle::draw(sf::RenderTarget& target, sf::RenderStates states) const
+{
+	target.draw(*m_shape, states);
 }
 
 sf::Shape& Obstacle::getShape()
 {
 	return *m_shape;
-}
-
-Obstacle::Type Obstacle::getType()
-{
-	return m_type;
-}
-
-void Obstacle::draw(sf::RenderTarget& target, sf::RenderStates states) const
-{
-	target.draw(*m_shape, states);
 }

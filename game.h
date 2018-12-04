@@ -10,6 +10,8 @@
 
 #include "Obstacle.h"
 #include "Constants.h"
+#include "Circle.h"
+#include "Triangle.h"
 #include "Car.h"
 
 class Game
@@ -20,12 +22,12 @@ public:
 private:
 	void newGame();
 	void gameOver();
-	static bool isGameOver(Car::Lane carLane, Car::Lane objLane, Obstacle::Type type);
+	static bool isGameOver(Car::Lane carLane, Car::Lane objLane,Obstacle *o);
 
 	sf::RenderWindow m_window;
 
 	sf::VertexArray m_dividers;
-	std::deque<Obstacle> m_obstacles;
+	std::deque<Obstacle *> m_obstacles;
 	Car m_leftCar;
 	//m_rightCar;
 

@@ -12,14 +12,13 @@ public:
 		Triangle,
 	};*/
 
-	Obstacle(const sf::Color& color, const sf::Vector2f& pos);
+	Obstacle();
+	//Obstacle(const sf::Color& color, const sf::Vector2f& pos);
+	//Obstacle(Type type, const sf::Color& color, const sf::Vector2f& pos);	
 	sf::Shape& getShape();
-	Type getType();
-	static sf::Texture m_circleTexture;
-	static sf::Texture m_triangleTexture;
 protected:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
-	Type m_type;
 	std::unique_ptr<sf::Shape> m_shape;
+	
 };
 #endif // OBSTACLE_H

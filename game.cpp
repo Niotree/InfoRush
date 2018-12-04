@@ -38,8 +38,8 @@ Game::Game() :
 	m_overlayBg.setFillColor(sf::Color(0, 0, 0, 100));
 
 	//If these fail to load, simple Circles/Rectangles will be used.
-	Obstacle::m_circleTexture.loadFromFile("assets/circle.png");
-	Obstacle::m_triangleTexture.loadFromFile("assets/triangle.png");
+	Circle::m_circleTexture.loadFromFile("assets/circle.png");
+	Triangle::m_triangleTexture.loadFromFile("assets/triangle.png");
 	Car::m_carTexture.loadFromFile("assets/car.png");
 	m_leftCar.applyTexture();
 	//m_rightCar.applyTexture();
@@ -95,45 +95,59 @@ void Game::run()
 			if (m_distance > SPAWN_DIST)
 			{
 				++m_score;
-				m_obstacles.emplace_front(static_cast<Obstacle::Type>(rand() % 2),
+				srand (time(NULL));
+				int rand = std::rand() % 2;
+				Obstacle *obs;
+				if (rand == 1) {
+					Circle *circle = new Circle(COLOR, sf::Vector2f{ LANE_WIDTH / 2.f + LANE_WIDTH * (std::rand() % 3), 0 });
+					obs = circle;
+				}
+				else {
+					Triangle *triangle = new Triangle(COLOR, sf::Vector2f{ LANE_WIDTH / 2.f + LANE_WIDTH * (std::rand() % 3), 0 });
+					obs = triangle;
+				}
+				m_obstacles.emplace_front(obs,
 					COLOR,
-					sf::Vector2f{ LANE_WIDTH / 2.f + LANE_WIDTH * (rand() % 3), 0 });
-					sf::Vector2f{ LANE_WIDTH * 2.f + LANE_WIDTH / 3 + LANE_WIDTH * (rand() % 3), 0 };
+					sf::Vector2f{ LANE_WIDTH / 2.f + LANE_WIDTH * (std::rand() % 3), 0 });
+					sf::Vector2f{ LANE_WIDTH * 2.f + LANE_WIDTH / 3 + LANE_WIDTH * (std::rand() % 3), 0 };
 				m_distance -= SPAWN_DIST;
 			}
 
 			for (auto it = m_obstacles.begin(); it != m_obstacles.end(); ++it)
 			{
-				it->getShape().move(0, m_velocity * dt);
-				if (it->getShape().getGlobalBounds().top > WINDOW_HEIGHT - CAR_HEIGHT - OBJECT_SIZE
-					&& it->getShape().getGlobalBounds().top < WINDOW_HEIGHT - OBJECT_SIZE)
+				//Obstacle* o = m_obstacles.at;
+				(*it)->getShape().move(0, m_velocity * dt);
+				if ((*it)->getShape().getGlobalBounds().top > WINDOW_HEIGHT - CAR_HEIGHT - OBJECT_SIZE
+					&& (*it)->getShape().getGlobalBounds().top < WINDOW_HEIGHT - OBJECT_SIZE)
 				{
-					auto& car = it->getShape().getGlobalBounds().left < 3 * LANE_WIDTH ? m_leftCar : m_leftCar;
+					auto& car = m_leftCar;
 					Car::Lane lane;
-					if (static_cast<int>(it->getShape().getGlobalBounds().left / LANE_WIDTH) % 3 == 2) {
+					if (static_cast<int>((*it)->getShape().getGlobalBounds().left / LANE_WIDTH) % 3 == 2) {
 						lane = Car::Right;
 					}
-					else if (static_cast<int>(it->getShape().getGlobalBounds().left / LANE_WIDTH) % 3 == 0) {
+					else if (static_cast<int>((*it)->getShape().getGlobalBounds().left / LANE_WIDTH) % 3 == 0) {
 						lane = Car::Left;
 					}
 					else lane = Car::Center;
 					if (lane == car.getLane())
 					{
-					if (it->getType() == Obstacle::Triangle)
-					{
-						gameOver();
-						break;
-					}
+						Circle *c = dynamic_cast<Circle *>(*it);
+						if (c == NULL)
+						{
+							gameOver();
+							break;
+						}
 					it = std::prev(m_obstacles.erase(it));
-				}
-				}
-				else if (it->getShape().getGlobalBounds().top > WINDOW_HEIGHT)
-				{
-					if (it->getType() == Obstacle::Circle)
-					{
-						gameOver();
-						break;
 					}
+					}
+					else if ((*it)->getShape().getGlobalBounds().top > WINDOW_HEIGHT)
+					{
+						Circle *c = dynamic_cast<Circle *>(*it);
+						if (c != NULL)
+						{
+							gameOver();
+							break;
+						}
 					it = std::prev(m_obstacles.erase(it));
 				}
 			}
@@ -145,8 +159,8 @@ void Game::run()
 
 		m_window.clear(BACKGROUND_COLOR);
 		m_window.draw(m_dividers);
-		for (auto& o : m_obstacles)
-			m_window.draw(o);
+		for (auto *o : m_obstacles)
+			m_window.draw(*o);
 		m_window.draw(m_leftCar);
 		//m_window.draw(m_rightCar);
 		if (!m_playing)
@@ -158,11 +172,11 @@ void Game::run()
 	}
 }
 
-bool Game::isGameOver(Car::Lane carLane, Car::Lane objLane, Obstacle::Type type)
+bool Game::isGameOver(Car::Lane carLane, Car::Lane objLane, Obstacle *o)
 {
 	std::cout << "lala";
-	if ((carLane == objLane && type == Obstacle::Circle)
-		|| (carLane != objLane && type == Obstacle::Triangle))
+	if ((carLane == objLane && dynamic_cast<Circle *>(o)==NULL)
+		|| (carLane != objLane && dynamic_cast<Circle *>(o) != NULL))
 		return false;
 	return true;
 }
