@@ -2,6 +2,8 @@
 #ifndef TRIANGLE_H
 #define TRIANGLE_H
 #include "Obstacle.h"
+#include <SFML/Graphics.hpp>
+
 
 class Triangle : public Obstacle
 {

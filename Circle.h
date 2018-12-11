@@ -2,6 +2,8 @@
 #ifndef CIRCLE_H
 #define CIRCLE_H
 #include "Obstacle.h"
+#include <SFML/Graphics.hpp>
+
 
 class Circle : public Obstacle
 {

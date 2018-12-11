@@ -5,6 +5,7 @@
 #include <SFML/Audio.hpp>
 #include <iostream>
 #include <deque>
+#include <vector>
 #include <memory>
 #include <algorithm>
 
@@ -13,6 +14,8 @@
 #include "Circle.h"
 #include "Triangle.h"
 #include "Car.h"
+
+using namespace std;
 
 class Game
 {
@@ -27,7 +30,8 @@ private:
 	sf::RenderWindow m_window;
 
 	sf::VertexArray m_dividers;
-	std::deque<Obstacle *> m_obstacles;
+	//vector<Obstacle*> m_obstacles;
+	deque<Obstacle *> m_obstacles;
 	Car m_leftCar;
 	//m_rightCar;
 

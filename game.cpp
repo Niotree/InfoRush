@@ -106,10 +106,10 @@ void Game::run()
 					Triangle *triangle = new Triangle(COLOR, sf::Vector2f{ LANE_WIDTH / 2.f + LANE_WIDTH * (std::rand() % 3), 0 });
 					obs = triangle;
 				}
-				m_obstacles.emplace_front(obs,
-					COLOR,
+				m_obstacles.emplace_front(obs);
+					/*COLOR,
 					sf::Vector2f{ LANE_WIDTH / 2.f + LANE_WIDTH * (std::rand() % 3), 0 });
-					sf::Vector2f{ LANE_WIDTH * 2.f + LANE_WIDTH / 3 + LANE_WIDTH * (std::rand() % 3), 0 };
+					sf::Vector2f{ LANE_WIDTH * 2.f + LANE_WIDTH / 3 + LANE_WIDTH * (std::rand() % 3), 0 };*/
 				m_distance -= SPAWN_DIST;
 			}
 
