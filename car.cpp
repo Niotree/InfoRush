@@ -92,6 +92,8 @@ void Car::draw(sf::RenderTarget& target, const sf::RenderStates states) const
 void Car::setLane(Car::Lane lane)
 {
 	m_targetX = m_center.x + LANE_WIDTH / 2.f * lane;
+	std::cout << lane << "-" << m_lane << "\n";
 	m_transition = lane - m_lane;
+	std::cout << m_transition << "\n";
 	m_lane = lane;
 }

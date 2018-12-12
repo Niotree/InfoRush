@@ -5,6 +5,7 @@
 {
 	return m_type;
 }*/
+sf::Texture Circle::m_circleTexture;
 
 Circle::Circle(const sf::Color& color, const sf::Vector2f& pos)
 {

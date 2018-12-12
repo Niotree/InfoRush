@@ -12,7 +12,7 @@ public:
 		Triangle,
 	};*/
 
-	Obstacle();
+	//Obstacle();
 	//Obstacle(const sf::Color& color, const sf::Vector2f& pos);
 	//Obstacle(Type type, const sf::Color& color, const sf::Vector2f& pos);	
 	sf::Shape& getShape();

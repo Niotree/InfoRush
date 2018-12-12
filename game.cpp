@@ -139,16 +139,16 @@ void Game::run()
 						}
 					it = std::prev(m_obstacles.erase(it));
 					}
-					}
-					else if ((*it)->getShape().getGlobalBounds().top > WINDOW_HEIGHT)
+				}
+				else if ((*it)->getShape().getGlobalBounds().top > WINDOW_HEIGHT)
+				{
+					Circle *c = dynamic_cast<Circle *>(*it);
+					if (c != NULL)
 					{
-						Circle *c = dynamic_cast<Circle *>(*it);
-						if (c != NULL)
-						{
-							gameOver();
-							break;
-						}
-					it = std::prev(m_obstacles.erase(it));
+						gameOver();
+						break;
+					}
+				it = std::prev(m_obstacles.erase(it));
 				}
 			}
 
@@ -174,9 +174,8 @@ void Game::run()
 
 bool Game::isGameOver(Car::Lane carLane, Car::Lane objLane, Obstacle *o)
 {
-	std::cout << "lala";
-	if ((carLane == objLane && dynamic_cast<Circle *>(o)==NULL)
-		|| (carLane != objLane && dynamic_cast<Circle *>(o) != NULL))
+	if ((carLane == objLane && dynamic_cast<Circle *>(o) == NULL)
+		|| (carLane != objLane && dynamic_cast<Triangle *>(o) == NULL))
 		return false;
 	return true;
 }

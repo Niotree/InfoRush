@@ -5,7 +5,7 @@
 {
 	return m_type;
 }*/
-
+sf::Texture Triangle::m_triangleTexture;
 Triangle::Triangle(const sf::Color& color, const sf::Vector2f& pos)
 {
 	m_shape = std::unique_ptr<sf::Shape>(new sf::CircleShape(OBJECT_SIZE / 2));
