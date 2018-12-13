@@ -1,11 +1,9 @@
 #include "Triangle.h"
 #include "Constants.h"
 
-/*Triangle::Type Triangle::getType()
-{
-	return m_type;
-}*/
 sf::Texture Triangle::m_triangleTexture;
+
+//Inisialisation
 Triangle::Triangle(const sf::Color& color, const sf::Vector2f& pos)
 {
 	m_shape = std::unique_ptr<sf::Shape>(new sf::CircleShape(OBJECT_SIZE / 2));

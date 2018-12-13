@@ -4,10 +4,10 @@
 #include <iterator>
 
 Game::Game() :
-	m_window(sf::VideoMode(LANE_WIDTH * 3, WINDOW_HEIGHT), "TwoCars", sf::Style::Close | sf::Style::Titlebar),
+	//Initilisation
+	m_window(sf::VideoMode(LANE_WIDTH * 3, WINDOW_HEIGHT), "InfoRush", sf::Style::Close | sf::Style::Titlebar),
 	m_dividers(sf::Lines, 6),
 	m_leftCar(COLOR, sf::Vector2f{ (int)LANE_WIDTH, (int)WINDOW_HEIGHT }),
-	//m_rightCar(RIGHT_COLOR, sf::Vector2f{ (int)LANE_WIDTH * 3, (int)WINDOW_HEIGHT }),
 	m_overlayBg({ (int)LANE_WIDTH * 3, (int)WINDOW_HEIGHT }),
 	m_playing(false)
 {
@@ -19,12 +19,12 @@ Game::Game() :
 	m_dividers[3] = sf::Vertex({ (int)LANE_WIDTH * 3, (int)WINDOW_HEIGHT }, sf::Color(180, 180, 180));
 	m_dividers[4] = sf::Vertex({ (int)LANE_WIDTH * 2, 0 }, sf::Color(180, 180, 180));
 	m_dividers[5] = sf::Vertex({ (int)LANE_WIDTH * 2, (int)WINDOW_HEIGHT }, sf::Color(180, 180, 180));
-
+	
+	//Initilisation des touches pour se déplacer
 	m_leftCar.setKeyRigth(sf::Keyboard::D);
 	m_leftCar.setKeyLeft(sf::Keyboard::Q);
-	//m_rightCar.setKey(sf::Keyboard::J);
 
-	//TODO What should I do if loading this fails ?
+	//affichage du début du jeu
 	m_font.loadFromFile("assets/font.ttf");
 	m_prompt.setFont(m_font);
 	m_prompt.setColor(sf::Color(180, 180, 180));
@@ -37,14 +37,12 @@ Game::Game() :
 
 	m_overlayBg.setFillColor(sf::Color(0, 0, 0, 100));
 
-	//If these fail to load, simple Circles/Rectangles will be used.
+	//Ce qui s'affiche si le chargement de images échou
 	Circle::m_circleTexture.loadFromFile("assets/circle.png");
 	Triangle::m_triangleTexture.loadFromFile("assets/triangle.png");
 	Car::m_carTexture.loadFromFile("assets/car.png");
 	m_leftCar.applyTexture();
-	//m_rightCar.applyTexture();
 	m_leftCar.reset(Car::Center);
-	//m_rightCar.reset(Car::Left);
 	m_bgMusic.openFromFile("assets/bgm.ogg");
 	m_bgMusic.setLoop(true);
 }
@@ -62,22 +60,28 @@ void Game::newGame()
 	//m_rightCar.reset(Car::Left);
 }
 
+/*
+	Méthode pour run le jeu
+*/
 void Game::run()
 {
 	srand(time(nullptr));
 	sf::Event event;
+	//boucle qui recupère le evenement durant le jeu
 	while (m_window.isOpen())
 	{
 		while (m_window.pollEvent(event))
 		{
+			//le jeu est fini
 			if (event.type == sf::Event::Closed)
 				m_window.close();
+			//recupère les otuche pour le déplacement
 			if (m_playing)
 			{
 				m_leftCar.handleInputRight(event);
 				m_leftCar.handleInputLeft(event);
-				//m_rightCar.handleInput(event);
 			}
+			//pour le debut du jeu
 			else if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Space)
 			{
 				m_playing = true;
@@ -91,35 +95,34 @@ void Game::run()
 		{
 			m_velocity += ACCELERATION * dt;
 			m_distance += m_velocity * dt;
-
+			//création des obstace
 			if (m_distance > SPAWN_DIST)
 			{
 				++m_score;
 				srand (time(NULL));
 				int rand = std::rand() % 2;
 				Obstacle *obs;
+				//ajout d'un cercle
 				if (rand == 1) {
 					Circle *circle = new Circle(COLOR, sf::Vector2f{ LANE_WIDTH / 2.f + LANE_WIDTH * (std::rand() % 3), 0 });
 					obs = circle;
 				}
+				//ajout d'un triangle
 				else {
 					Triangle *triangle = new Triangle(COLOR, sf::Vector2f{ LANE_WIDTH / 2.f + LANE_WIDTH * (std::rand() % 3), 0 });
 					obs = triangle;
 				}
 				m_obstacles.emplace_front(obs);
-					/*COLOR,
-					sf::Vector2f{ LANE_WIDTH / 2.f + LANE_WIDTH * (std::rand() % 3), 0 });
-					sf::Vector2f{ LANE_WIDTH * 2.f + LANE_WIDTH / 3 + LANE_WIDTH * (std::rand() % 3), 0 };*/
 				m_distance -= SPAWN_DIST;
 			}
 
 			for (auto it = m_obstacles.begin(); it != m_obstacles.end(); ++it)
 			{
-				//Obstacle* o = m_obstacles.at;
 				(*it)->getShape().move(0, m_velocity * dt);
 				if ((*it)->getShape().getGlobalBounds().top > WINDOW_HEIGHT - CAR_HEIGHT - OBJECT_SIZE
 					&& (*it)->getShape().getGlobalBounds().top < WINDOW_HEIGHT - OBJECT_SIZE)
 				{
+					//déplacement du personnage
 					auto& car = m_leftCar;
 					Car::Lane lane;
 					if (static_cast<int>((*it)->getShape().getGlobalBounds().left / LANE_WIDTH) % 3 == 2) {
@@ -129,11 +132,14 @@ void Game::run()
 						lane = Car::Left;
 					}
 					else lane = Car::Center;
+					//verification s'il a pris un obstacle
 					if (lane == car.getLane())
 					{
+						//Rentre dans le if s'il a pris un triangle
 						Circle *c = dynamic_cast<Circle *>(*it);
 						if (c == NULL)
 						{
+							std::cout << lane << "->" << car.getLane();
 							gameOver();
 							break;
 						}
@@ -142,6 +148,7 @@ void Game::run()
 				}
 				else if ((*it)->getShape().getGlobalBounds().top > WINDOW_HEIGHT)
 				{
+					//Rentre dans le if s'il a oublié le cercle
 					Circle *c = dynamic_cast<Circle *>(*it);
 					if (c != NULL)
 					{
@@ -153,16 +160,14 @@ void Game::run()
 			}
 
 			m_leftCar.update(dt);
-			//m_rightCar.update(dt);
 		}
 
-
+		//affichage
 		m_window.clear(BACKGROUND_COLOR);
 		m_window.draw(m_dividers);
 		for (auto *o : m_obstacles)
 			m_window.draw(*o);
 		m_window.draw(m_leftCar);
-		//m_window.draw(m_rightCar);
 		if (!m_playing)
 		{
 			m_window.draw(m_overlayBg);
@@ -172,6 +177,11 @@ void Game::run()
 	}
 }
 
+/*
+	Méthode qui vérifie si le jeu est fini ou pas 
+	Il renvoie oui si le personnage prend un triangle ou s'il loupe un cercle
+	sinon renvoie faux
+*/
 bool Game::isGameOver(Car::Lane carLane, Car::Lane objLane, Obstacle *o)
 {
 	if ((carLane == objLane && dynamic_cast<Circle *>(o) == NULL)
@@ -179,7 +189,9 @@ bool Game::isGameOver(Car::Lane carLane, Car::Lane objLane, Obstacle *o)
 		return false;
 	return true;
 }
-
+/*
+	Méthode qui renvoie le text de fin du jeu avec le score
+*/
 void Game::gameOver()
 {
 	m_playing = false;

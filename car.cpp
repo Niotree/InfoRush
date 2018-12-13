@@ -4,6 +4,7 @@
 
 sf::Texture Car::m_carTexture;
 
+//Méthode pour initialiser
 Car::Car(const sf::Color& color, const sf::Vector2f& pos) :
 	m_transition(0),
 	m_lane(Left),
@@ -16,22 +17,26 @@ Car::Car(const sf::Color& color, const sf::Vector2f& pos) :
 	m_shape.setPosition(m_center + sf::Vector2f{ LANE_WIDTH / 2.f * m_lane, 0 });
 }
 
+//Méthode pour mettre la texture
 void Car::applyTexture()
 {
 	m_shape.setTexture(&m_carTexture);
 }
+
+//initialisation de la touche pour aller à gauche
 void Car::setKeyLeft(sf::Keyboard::Key key)
 {
 	m_keyLeft = key;
 }
 
+//Initialisation de la touche pour aller à droite
 void Car::setKeyRigth(sf::Keyboard::Key key)
 {
 	m_keyRight = key;
 }
 
 
-
+//Méthode pour modifier la collone quand on appuie sur gauche
 void Car::handleInputLeft(const sf::Event& event)
 {
 	if (event.type == sf::Event::KeyPressed && event.key.code == m_keyLeft && m_lane > -1)
@@ -40,6 +45,7 @@ void Car::handleInputLeft(const sf::Event& event)
 	}
 }
 
+//Méthode pour modifier la collone quand on appuie sur droite
 void Car::handleInputRight(const sf::Event& event)
 {
 	if (event.type == sf::Event::KeyPressed && event.key.code == m_keyRight && m_lane < 3)
@@ -48,6 +54,7 @@ void Car::handleInputRight(const sf::Event& event)
 	}
 }
 
+//Méthode pour reucperer la colonne ou est situer le personnage
 Car::Lane Car::getLane()
 {
 	if (m_transition != 0) {
@@ -64,6 +71,7 @@ Car::Lane Car::getLane()
 	return m_lane;
 }
 
+//Méthode pour reinialiser
 void Car::reset(Lane lane)
 {
 	m_transition = 0;
@@ -71,6 +79,7 @@ void Car::reset(Lane lane)
 	m_shape.setPosition(m_center + sf::Vector2f{ LANE_WIDTH / 2.f * m_lane, 0 });
 }
 
+//Méthode pour méttre a jour la position
 void Car::update(float dt)
 {
 	if (m_transition > 0)
@@ -93,16 +102,16 @@ void Car::update(float dt)
 	}
 }
 
+//Méthode pour dessiner le personnage
 void Car::draw(sf::RenderTarget& target, const sf::RenderStates states) const
 {
 	target.draw(m_shape, states);
 }
 
+//Méthode pour modifier la colonne 
 void Car::setLane(Car::Lane lane)
 {
 	m_targetX = m_center.x + LANE_WIDTH / 2.f * lane;
-	std::cout << lane << "-" << m_lane << "\n";
 	m_transition = lane - m_lane;
-	std::cout << m_transition << "\n";
 	m_lane = lane;
 }

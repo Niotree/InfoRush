@@ -3,20 +3,15 @@
 #define TRIANGLE_H
 #include "Obstacle.h"
 #include <SFML/Graphics.hpp>
-
+//Class triangle heritant d'Obstacle
 
 class Triangle : public Obstacle
 {
 public:
-	/*enum Type
-	{
-		Cercle
-	};*/
+	//Méthode d'inisialisation
 	Triangle(const sf::Color& color, const sf::Vector2f& pos);
+	//texture
 	static sf::Texture m_triangleTexture;
-	//Type getType();
-protected:
-	//Type m_type;
 };
 
 #endif //TRIANGLE_H

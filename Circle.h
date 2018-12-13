@@ -4,19 +4,14 @@
 #include "Obstacle.h"
 #include <SFML/Graphics.hpp>
 
-
+//Classe cercle héritant d'Obstacle
 class Circle : public Obstacle
 {
 public:
-	/*enum Type
-	{
-		Cercle
-	};*/
+	//Méthode d'initialisation
 	Circle(const sf::Color& color, const sf::Vector2f& pos);
+	//Texture
 	static sf::Texture m_circleTexture;
-	//Type getType();
-//protected:
-	//Type m_type;
 };
 
 #endif //CRICLE_H

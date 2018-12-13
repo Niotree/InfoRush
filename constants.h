@@ -2,6 +2,7 @@
 #define CONSTANTS_H
 #include <SFML/Graphics/Color.hpp>
 
+//Classe Header qui regroupe toutes les contantes du jeu
 const int LANE_WIDTH = 80;
 const int OBJECT_SIZE = LANE_WIDTH / 2;
 const int CAR_HEIGHT = LANE_WIDTH;

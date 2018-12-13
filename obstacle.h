@@ -3,21 +3,16 @@
 
 #include <SFML/Graphics.hpp>
 
+//Class Obstacle
 class Obstacle : public sf::Drawable
 {
 public:
-	/*enum Type
-	{
-		Circle,
-		Triangle,
-	};*/
-
-	//Obstacle();
-	//Obstacle(const sf::Color& color, const sf::Vector2f& pos);
-	//Obstacle(Type type, const sf::Color& color, const sf::Vector2f& pos);	
+	//Méthode pour récuperer la forme de l'obstacle
 	sf::Shape& getShape();
 protected:
+	//Dessine l'obstacle
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+	//La forme
 	std::unique_ptr<sf::Shape> m_shape;
 	
 };
