@@ -29,6 +29,13 @@ private:
 	void gameOver();
 	//Méthode pour savoir si la partie est perdu ou non 
 	static bool isGameOver(Car::Lane carLane, Car::Lane objLane,Obstacle *o);
+	struct MyException : public exception {
+		const char * what() const throw () {
+			return "valeur null dans la queue";
+		}
+	};
+
+	void operator+(Obstacle* O);
 
 	//fenetre de jeu
 	sf::RenderWindow m_window;

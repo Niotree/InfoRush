@@ -2,6 +2,7 @@
 #include "Game.h"
 #include <cstdlib>
 #include <iterator>
+#include <deque>
 
 Game::Game() :
 	//Initilisation
@@ -101,18 +102,31 @@ void Game::run()
 				++m_score;
 				srand (time(NULL));
 				int rand = std::rand() % 2;
-				Obstacle *obs;
+				Obstacle *obs=NULL;
 				//ajout d'un cercle
 				if (rand == 1) {
-					Circle *circle = new Circle(COLOR, sf::Vector2f{ LANE_WIDTH / 2.f + LANE_WIDTH * (std::rand() % 3), 0 });
-					obs = circle;
+					try {
+						Circle *circle = new Circle(COLOR, sf::Vector2f{ LANE_WIDTH / 2.f + LANE_WIDTH * (std::rand() % 3), 0 });
+						if (circle == NULL) { throw MyException(); }
+						else obs = circle;
+					}
+					catch (MyException& e) {
+						std::cout << e.what() << std::endl;
+					}
 				}
 				//ajout d'un triangle
 				else {
-					Triangle *triangle = new Triangle(COLOR, sf::Vector2f{ LANE_WIDTH / 2.f + LANE_WIDTH * (std::rand() % 3), 0 });
-					obs = triangle;
+					 try {
+						Triangle *triangle = new Triangle(COLOR, sf::Vector2f{ LANE_WIDTH / 2.f + LANE_WIDTH * (std::rand() % 3), 0 });
+						if (triangle == NULL) { throw MyException(); }
+						else obs = triangle;
+					}
+					catch (MyException& e) {
+						std::cout << e.what() << std::endl;
+					}
 				}
-				m_obstacles.emplace_front(obs);
+				//Surdéfinition Opérateur + (Ajout d'un obstacle dans la queue)
+				(*this) + obs;
 				m_distance -= SPAWN_DIST;
 			}
 
@@ -139,7 +153,6 @@ void Game::run()
 						Circle *c = dynamic_cast<Circle *>(*it);
 						if (c == NULL)
 						{
-							std::cout << lane << "->" << car.getLane();
 							gameOver();
 							break;
 						}
@@ -200,3 +213,9 @@ void Game::gameOver()
 	m_prompt.setPosition(0,
 		(m_window.getSize().y - m_prompt.getLocalBounds().height) / 2.f);
 }
+
+void Game::operator+ ( Obstacle* o)
+{
+	m_obstacles.emplace_front(o);
+}
+
