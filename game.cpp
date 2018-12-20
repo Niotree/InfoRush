@@ -216,8 +216,8 @@ bool Game::isGameOver(Car::Lane carLane, Car::Lane objLane, Obstacle *o)
 void Game::gameOver()
 {
 	m_playing = false;
-	m_prompt.setString(" You scored " + std::to_string(m_score) + ".\n"
-		" Press Space to restart.");
+	m_prompt.setString(" Votre score : " + std::to_string(m_score) + ".\n"
+		" Espce pour rejouer.");
 	m_prompt.setPosition(0,
 		(m_window.getSize().y - m_prompt.getLocalBounds().height) / 2.f);
 }
