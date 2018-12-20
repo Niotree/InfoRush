@@ -46,6 +46,7 @@ private:
 
 	//variable pour le jeu
 	sf::Font m_font;
+	sf::Sprite sprite;
 	sf::Text m_prompt;
 	sf::RectangleShape m_overlayBg;
 

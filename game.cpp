@@ -4,11 +4,14 @@
 #include <iterator>
 #include <deque>
 
+//Essai sprite animé
+
 Game::Game() :
+
 	//Initilisation
 	m_window(sf::VideoMode(LANE_WIDTH * 3, WINDOW_HEIGHT), "InfoRush", sf::Style::Close | sf::Style::Titlebar),
 	m_dividers(sf::Lines, 6),
-	m_leftCar(COLOR, sf::Vector2f{ (int)LANE_WIDTH, (int)WINDOW_HEIGHT }),
+	m_leftCar(CAR_COLOR, sf::Vector2f{ (int)LANE_WIDTH, (int)WINDOW_HEIGHT }),
 	m_overlayBg({ (int)LANE_WIDTH * 3, (int)WINDOW_HEIGHT }),
 	m_playing(false)
 {
@@ -30,18 +33,19 @@ Game::Game() :
 	m_prompt.setFont(m_font);
 	m_prompt.setColor(sf::Color(180, 180, 180));
 	m_prompt.setCharacterSize(15);
-	m_prompt.setString("Take all Circles, avoid all Triangles.\n"
-		"Control left car with F, right with J.\n"
-		"       Press Space to start.");
+	m_prompt.setString("   Evite les bus, mange les donuts.\n"
+		"  Q pour aller à gauche et D à droite.\n"
+		"  Appuie sur Espace pour commencer.");
 	m_prompt.setPosition((m_window.getSize().x - m_prompt.getLocalBounds().width) / 2.f,
 		(m_window.getSize().y - m_prompt.getLocalBounds().height) / 2.f);
 
 	m_overlayBg.setFillColor(sf::Color(0, 0, 0, 100));
 
 	//Ce qui s'affiche si le chargement de images échou
-	Circle::m_circleTexture.loadFromFile("assets/circle.png");
-	Triangle::m_triangleTexture.loadFromFile("assets/triangle.png");
-	Car::m_carTexture.loadFromFile("assets/car.png");
+	Circle::m_circleTexture.loadFromFile("assets/beignet.png");
+	Triangle::m_triangleTexture.loadFromFile("assets/bus.png");
+	Car::m_carTexture.loadFromFile("assets/sprite2.png");
+	//sf::Sprite sprite(Car::m_carTexture, sf::IntRect(0, 0, 300,400));
 	m_leftCar.applyTexture();
 	m_leftCar.reset(Car::Center);
 	m_bgMusic.openFromFile("assets/bgm.ogg");
@@ -58,7 +62,6 @@ void Game::newGame()
 	m_distance = SPAWN_DIST;
 	m_playing = true;
 	m_leftCar.reset(Car::Center);
-	//m_rightCar.reset(Car::Left);
 }
 
 /*
@@ -172,14 +175,19 @@ void Game::run()
 				}
 			}
 
+			
+
 			m_leftCar.update(dt);
 		}
 
 		//affichage
 		m_window.clear(BACKGROUND_COLOR);
 		m_window.draw(m_dividers);
-		for (auto *o : m_obstacles)
+		int i = 0;
+		//affichage obstacle
+		for (auto *o : m_obstacles) 
 			m_window.draw(*o);
+
 		m_window.draw(m_leftCar);
 		if (!m_playing)
 		{

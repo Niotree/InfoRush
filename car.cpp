@@ -8,11 +8,11 @@ sf::Texture Car::m_carTexture;
 Car::Car(const sf::Color& color, const sf::Vector2f& pos) :
 	m_transition(0),
 	m_lane(Left),
-	m_shape({ (int)OBJECT_SIZE, (int)CAR_HEIGHT }),
+	m_shape({ (int)CAR_SIZE, (int)CAR_HEIGHT }),
 	m_key(sf::Keyboard::Space),
 	m_center(pos)
 {
-	m_shape.setFillColor(color);
+	//m_shape.setFillColor(color);
 	m_shape.setOrigin(m_shape.getLocalBounds().width / 2, m_shape.getLocalBounds().height);
 	m_shape.setPosition(m_center + sf::Vector2f{ LANE_WIDTH / 2.f * m_lane, 0 });
 }
@@ -20,7 +20,7 @@ Car::Car(const sf::Color& color, const sf::Vector2f& pos) :
 //Méthode pour mettre la texture
 void Car::applyTexture()
 {
-	m_shape.setTexture(&m_carTexture);
+	m_shape.setTexture(& m_carTexture);
 }
 
 //initialisation de la touche pour aller à gauche
@@ -36,7 +36,7 @@ void Car::setKeyRigth(sf::Keyboard::Key key)
 }
 
 
-//Méthode pour modifier la collone quand on appuie sur gauche
+//Méthode pour modifier la colonne quand on appuie sur gauche
 void Car::handleInputLeft(const sf::Event& event)
 {
 	if (event.type == sf::Event::KeyPressed && event.key.code == m_keyLeft && m_lane > -1)
