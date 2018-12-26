@@ -194,6 +194,13 @@ void Game::run()
 			m_window.draw(m_overlayBg);
 			m_window.draw(m_prompt);
 		}
+		m_prompt_score.setFont(m_font);
+		m_prompt_score.setColor(sf::Color(180, 180, 180));
+		m_prompt_score.setCharacterSize(15);
+		m_prompt_score.setString("  Score :"+ std::to_string(m_score));
+		m_prompt_score.setPosition(10,
+			10);
+		m_window.draw(m_prompt_score);
 		m_window.display();
 	}
 }

@@ -48,6 +48,7 @@ private:
 	sf::Font m_font;
 	sf::Sprite sprite;
 	sf::Text m_prompt;
+	sf::Text m_prompt_score;
 	sf::RectangleShape m_overlayBg;
 
 	sf::Music m_bgMusic;
