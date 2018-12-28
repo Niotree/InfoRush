@@ -12,7 +12,7 @@
 #include "Constants.h"
 #include "Circle.h"
 #include "Triangle.h"
-#include "Car.h"
+#include "personnage.h"
 
 using namespace std;
 
@@ -28,7 +28,7 @@ private:
 	//Méthode quand la partie est perdu
 	void gameOver();
 	//Méthode pour savoir si la partie est perdu ou non 
-	static bool isGameOver(Car::Lane carLane, Car::Lane objLane,Obstacle *o);
+	static bool isGameOver(Personnage::Lane carLane, Personnage::Lane objLane,Obstacle *o);
 	struct MyException : public exception {
 		const char * what() const throw () {
 			return "valeur null dans la queue";
@@ -42,7 +42,7 @@ private:
 
 	sf::VertexArray m_dividers;
 	deque<Obstacle *> m_obstacles;	//deque comportant les obstacles
-	Car m_leftCar; //le personnage
+	Personnage m_player; //le personnage
 
 	//variable pour le jeu
 	sf::Font m_font;

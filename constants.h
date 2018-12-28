@@ -5,8 +5,8 @@
 //Classe Header qui regroupe toutes les contantes du jeu
 const int LANE_WIDTH = 80;
 const int OBJECT_SIZE = LANE_WIDTH/1.25;
-const int CAR_SIZE = LANE_WIDTH/1.5;
-const int CAR_HEIGHT = LANE_WIDTH;
+const int PLAYER_SIZE = LANE_WIDTH/1.5;
+const int PLAYER_HEIGHT = LANE_WIDTH;
 const int WINDOW_HEIGHT = 600;
 const int SPAWN_DIST = 250;
 const int INITIAL_VELOCITY = 220;
@@ -16,5 +16,5 @@ const int CAR_TRANSITION_SPEED = 300;
 
 const sf::Color COLOR = sf::Color(0xFFFFFFFF);
 const sf::Color BACKGROUND_COLOR = sf::Color(0x211357FF);
-const sf::Color CAR_COLOR = sf::Color(0xFFFFFFFF);
+const sf::Color PLAYER_COLOR = sf::Color(0xFFFFFFFF);
 #endif //CONSTANTS_H

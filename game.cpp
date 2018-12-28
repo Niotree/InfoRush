@@ -11,7 +11,7 @@ Game::Game() :
 	//Initilisation
 	m_window(sf::VideoMode(LANE_WIDTH * 3, WINDOW_HEIGHT), "InfoRush", sf::Style::Close | sf::Style::Titlebar),
 	m_dividers(sf::Lines, 6),
-	m_leftCar(CAR_COLOR, sf::Vector2f{ (int)LANE_WIDTH, (int)WINDOW_HEIGHT }),
+	m_player(PLAYER_COLOR, sf::Vector2f{ (int)LANE_WIDTH, (int)WINDOW_HEIGHT }),
 	m_overlayBg({ (int)LANE_WIDTH * 3, (int)WINDOW_HEIGHT }),
 	m_playing(false)
 {
@@ -25,8 +25,8 @@ Game::Game() :
 	m_dividers[5] = sf::Vertex({ (int)LANE_WIDTH * 2, (int)WINDOW_HEIGHT }, sf::Color(180, 180, 180));
 	
 	//Initilisation des touches pour se déplacer
-	m_leftCar.setKeyRigth(sf::Keyboard::D);
-	m_leftCar.setKeyLeft(sf::Keyboard::Q);
+	m_player.setKeyRigth(sf::Keyboard::D);
+	m_player.setKeyLeft(sf::Keyboard::Q);
 
 	//affichage du début du jeu
 	m_font.loadFromFile("assets/font.ttf");
@@ -44,10 +44,10 @@ Game::Game() :
 	//Ce qui s'affiche si le chargement de images échou
 	Circle::m_circleTexture.loadFromFile("assets/beignet.png");
 	Triangle::m_triangleTexture.loadFromFile("assets/bus.png");
-	Car::m_carTexture.loadFromFile("assets/sprite2.png");
+	Personnage::m_carTexture.loadFromFile("assets/sprite2.png");
 	//sf::Sprite sprite(Car::m_carTexture, sf::IntRect(0, 0, 300,400));
-	m_leftCar.applyTexture();
-	m_leftCar.reset(Car::Center);
+	m_player.applyTexture();
+	m_player.reset(Personnage::Center);
 	m_bgMusic.openFromFile("assets/bgm.ogg");
 	m_bgMusic.setLoop(true);
 }
@@ -61,7 +61,7 @@ void Game::newGame()
 	m_velocity = INITIAL_VELOCITY;
 	m_distance = SPAWN_DIST;
 	m_playing = true;
-	m_leftCar.reset(Car::Center);
+	m_player.reset(Personnage::Center);
 }
 
 /*
@@ -82,8 +82,8 @@ void Game::run()
 			//recupère les otuche pour le déplacement
 			if (m_playing)
 			{
-				m_leftCar.handleInputRight(event);
-				m_leftCar.handleInputLeft(event);
+				m_player.handleInputRight(event);
+				m_player.handleInputLeft(event);
 			}
 			//pour le debut du jeu
 			else if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Space)
@@ -136,19 +136,19 @@ void Game::run()
 			for (auto it = m_obstacles.begin(); it != m_obstacles.end(); ++it)
 			{
 				(*it)->getShape().move(0, m_velocity * dt);
-				if ((*it)->getShape().getGlobalBounds().top > WINDOW_HEIGHT - CAR_HEIGHT - OBJECT_SIZE
+				if ((*it)->getShape().getGlobalBounds().top > WINDOW_HEIGHT - PLAYER_HEIGHT - OBJECT_SIZE
 					&& (*it)->getShape().getGlobalBounds().top < WINDOW_HEIGHT - OBJECT_SIZE)
 				{
 					//déplacement du personnage
-					auto& car = m_leftCar;
-					Car::Lane lane;
+					auto& car = m_player;
+					Personnage::Lane lane;
 					if (static_cast<int>((*it)->getShape().getGlobalBounds().left / LANE_WIDTH) % 3 == 2) {
-						lane = Car::Right;
+						lane = Personnage::Right;
 					}
 					else if (static_cast<int>((*it)->getShape().getGlobalBounds().left / LANE_WIDTH) % 3 == 0) {
-						lane = Car::Left;
+						lane = Personnage::Left;
 					}
-					else lane = Car::Center;
+					else lane = Personnage::Center;
 					//verification s'il a pris un obstacle
 					if (lane == car.getLane())
 					{
@@ -177,7 +177,7 @@ void Game::run()
 
 			
 
-			m_leftCar.update(dt);
+			m_player.update(dt);
 		}
 
 		//affichage
@@ -188,7 +188,7 @@ void Game::run()
 		for (auto *o : m_obstacles) 
 			m_window.draw(*o);
 
-		m_window.draw(m_leftCar);
+		m_window.draw(m_player);
 		if (!m_playing)
 		{
 			m_window.draw(m_overlayBg);
@@ -210,7 +210,7 @@ void Game::run()
 	Il renvoie oui si le personnage prend un triangle ou s'il loupe un cercle
 	sinon renvoie faux
 */
-bool Game::isGameOver(Car::Lane carLane, Car::Lane objLane, Obstacle *o)
+bool Game::isGameOver(Personnage::Lane carLane, Personnage::Lane objLane, Obstacle *o)
 {
 	if ((carLane == objLane && dynamic_cast<Circle *>(o) == NULL)
 		|| (carLane != objLane && dynamic_cast<Triangle *>(o) == NULL))
