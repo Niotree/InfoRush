@@ -4,13 +4,24 @@
 #include "Obstacle.h"
 #include <SFML/Graphics.hpp>
 
-//Classe cercle héritant d'Obstacle
+/**
+  * Class Circle heritant d'Obstacle
+  * Représenté par un donut dans le jeu
+  *
+  *@author EHANNO Aurélie & LE FALHER Antoine
+  */
 class Circle : public Obstacle
 {
 public:
-	//Méthode d'initialisation
+	/**
+	  *Constructeur
+	  @param color couleur de l'objet
+	  @param pos position de l'objet
+	*/
 	Circle(const sf::Color& color, const sf::Vector2f& pos);
-	//Texture
+	/**
+	  * Image du donut
+	  */
 	static sf::Texture m_circleTexture;
 };
 

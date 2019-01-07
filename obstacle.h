@@ -3,16 +3,28 @@
 
 #include <SFML/Graphics.hpp>
 
-//Class Obstacle
+/**
+  * Class Obstacle représentant les Obstacle qui l'on peut rencontrer durant le jeu
+  *
+  *@author EHANNO Aurélie & LE FALHER Antoine
+  */
 class Obstacle : public sf::Drawable
 {
 public:
-	//Méthode pour récuperer la forme de l'obstacle
+	/**
+	  * Méthode pour renvoyer la forme de l'Obstacle
+	  */
 	sf::Shape& getShape();
 protected:
-	//Dessine l'obstacle
+	/**
+	  * Méthode qui dessine l'obstacle
+	  * @param target la cible qui l'on dessine
+	  * @param states l'etat de la cible
+	  */
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
-	//La forme
+	/**
+	  * La forme de l'obstacle
+	  */
 	std::unique_ptr<sf::Shape> m_shape;
 	
 };

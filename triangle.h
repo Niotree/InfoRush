@@ -3,14 +3,26 @@
 #define TRIANGLE_H
 #include "Obstacle.h"
 #include <SFML/Graphics.hpp>
-//Class triangle heritant d'Obstacle
+
+/**
+  * Class triangle heritant d'Obstacle
+  * Représenté par un bus dans le jeu
+  *
+  *@author EHANNO Aurélie & LE FALHER Antoine
+  */
 
 class Triangle : public Obstacle
 {
 public:
-	//Méthode d'inisialisation
+	/**
+	  *Constructeur
+	  @param color couleur de l'objet
+	  @param pos position de l'objet
+	*/
 	Triangle(const sf::Color& color, const sf::Vector2f& pos);
-	//texture
+	/**
+	  * Image du bus
+	  */
 	static sf::Texture m_triangleTexture;
 };
 
